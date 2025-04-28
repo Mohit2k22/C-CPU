@@ -1,0 +1,41 @@
+//Fast come First Serve-FCFS
+#include <stdio.h>
+
+int main() {
+    int numberOfProcess;
+    printf("Enter total number of Processes: ");
+    scanf("%d", &numberOfProcess);
+
+    int burstTime[numberOfProcess], waitingTime[numberOfProcess], turnAroundTime[numberOfProcess];
+    double TotalWaitingTime = 0, averageWaitingTime = 0;
+
+    for (int i = 0; i < numberOfProcess; i++) {
+        printf("P[%d]: ", i + 1);
+        scanf("%d", &burstTime[i]);
+    }
+
+    waitingTime[0] = 0; // Waiting time for the first process is 0
+
+    // Calculate waiting time
+    for (int i = 1; i < numberOfProcess; i++) {
+        waitingTime[i] = 0;
+        for (int j = 0; j < i; j++) {
+            waitingTime[i] += burstTime[j];
+        }
+    }
+
+    printf("Process\t\tWaiting Time\tTurnaround Time\n");
+
+    // Calculate turnaround time and total waiting time
+    for (int i = 0; i < numberOfProcess; i++) {
+        turnAroundTime[i] = burstTime[i] + waitingTime[i];
+        TotalWaitingTime += waitingTime[i];
+
+        printf("P[%d]\t\t%d\t\t%d\n", i + 1, waitingTime[i], turnAroundTime[i]);
+    }
+
+    averageWaitingTime = TotalWaitingTime / numberOfProcess;
+    printf("Average waiting time: %.4f\n", averageWaitingTime);
+
+    return 0;
+}
